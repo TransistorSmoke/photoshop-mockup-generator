@@ -31,6 +31,7 @@ design.visible = true;
 
 try {
   for (var mockCount = 0; mockCount < numOfMocks; mockCount++) {
+    var mockColorLayer = mockLayers[mockCount];
     var color = mockLayers[mockCount].name;
     var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
 
