@@ -3,8 +3,7 @@
 /*
 * PURPOSE OF THIS SCRIPT
 * Loop each design through each shirt mock item
-* Save each created mock to a folder.
-* Make this folder name be the design name.
+* Save each created mock to the EXPORT folder where the script resides.
 */
 
 var doc = app.activeDocument;
@@ -19,7 +18,6 @@ var scriptFile = new File(scriptFilePath);
 var BASEPATH = scriptFile.parent;
 var EXPORTPATH = BASEPATH + "/exports";
 
-
 var designGroup = doc.layerSets.getByName(DESIGNS);
 var designLightVersion = designGroup.layers[0].name;
 var designDarkVersion = designGroup.layers[1].name;
@@ -33,95 +31,40 @@ var mockGroup = doc.layerSets.getByName(MOCKS);
 */
 var lightMockGroup = mockGroup.layers[0];
 var darkMockGroup = mockGroup.layers[1];
+var mockColorGroup = "";
 
+
+// Generate the mockups for both light and dark-colored shirts
 for (var dsnGroupCount = 0; dsnGroupCount < designGroup.layers.length; dsnGroupCount++) {
-  // The design is for light background.
-  // // Generate all the mockups for light-colored shirts.
-
-
   var currentDesign = designGroup.layers[dsnGroupCount];
   var designName = currentDesign.layers[0].name;
+
   currentDesign.visible = true;
 
-  // Generate the light-colored mockups
   if (designGroup.layers[dsnGroupCount].name === DSNLIGHTBG) {
-    lightMockGroup.visible = true;
+    mockColorGroup = lightMockGroup;
+  } else {
+    mockColorGroup = darkMockGroup;
+  }
+  mockColorGroup.visible = true;
 
-    for (var lightMockCount = 0; lightMockCount < lightMockGroup.layers.length; lightMockCount++) {
+  if (mockColorGroup.layers.length > 0) {
+    for (var colorGroupMockCount = 0; colorGroupMockCount < mockColorGroup.layers.length; colorGroupMockCount++) {
       try {
-        var lightMockLayer = lightMockGroup.layers[lightMockCount];
-        var color = lightMockLayer.name;
+        var colorGroupLayer = mockColorGroup.layers[colorGroupMockCount];
+        var color = colorGroupLayer.name;
         var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
 
         // Unhide mock shirt color, export design, save then hide the mock shirt, then proceed to another shirt color.
-        lightMockLayer.visible = true;
+        colorGroupLayer.visible = true;
         doc.exportDocument(fileName, ExportType.SAVEFORWEB);
-        lightMockLayer.visible = false;
+        colorGroupLayer.visible = false;
       } catch (err) {
-        alert("Error in generating light-colored shirt mockups: " + err);
+        alert("Error in generating shirt mockups: " + err);
       }
     }
-
-    currentDesign.visible = false;
-    lightMockGroup.visible = false;
-
   }
 
-  // generate the dark-colored mockups
-  else {
-    darkMockGroup.visible = true;
-
-    for (var darkMockCount = 0; darkMockCount < darkMockGroup.layers.length; darkMockCount++) {
-      try {
-        var darkMockLayer = darkMockGroup.layers[darkMockCount];
-        var color = darkMockLayer.name;
-        var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
-
-        darkMockLayer.visible = true;
-        doc.exportDocument(fileName, ExportType.SAVEFORWEB);
-        darkMockLayer.visible = false;
-      } catch (err) {
-        alert("Error in generating dark-colored shirt mockups: " + err);
-      }
-    }
-
-    currentDesign.visible = false;
-    darkMockGroup.visible = false;
-  }
+  currentDesign.visible = false;
+  mockColorGroup.visible = false;
 }
-
-// var mockGroup = doc.layerSets.getByName(MOCKS);
-// var designLayers = designGroup.layers;
-// var mockLayers = mockGroup.layers;
-// var numOfDesigns = designLayers.length;
-// var numOfMocks = mockLayers.length;
-
-// var design = designLayers[0];
-// var designName = design.name;
-// design.visible = true;
-
-
-// if (designGroup.typename === "LayerSet") {
-//   var numDesignSubGroups = designGroup.layers.length;
-
-//   alert("number of design subgroups: " + numDesignSubGroups)
-
-
-// }
-
-
-
-
-// try {
-//   for (var mockCount = 0; mockCount < numOfMocks; mockCount++) {
-//     var color = mockLayers[mockCount].name;
-//     var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
-
-//     // Unhide mock shirt color, export design, save then hide the mock shirt, then proceed to another shirt color.
-//     mockColorLayer.visible = true;
-//     doc.exportDocument(fileName, ExportType.SAVEFORWEB);
-//     mockColorLayer.visible = false;
-//   }
-// } catch (error) {
-//   alert("Error in generating mockups: " + error);
-// }
