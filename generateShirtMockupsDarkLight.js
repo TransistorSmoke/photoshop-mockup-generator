@@ -33,38 +33,44 @@ var lightMockGroup = mockGroup.layers[0];
 var darkMockGroup = mockGroup.layers[1];
 var mockColorGroup = "";
 
-
 // Generate the mockups for both light and dark-colored shirts
-for (var dsnGroupCount = 0; dsnGroupCount < designGroup.layers.length; dsnGroupCount++) {
-  var currentDesign = designGroup.layers[dsnGroupCount];
-  var designName = currentDesign.layers[0].name;
 
-  currentDesign.visible = true;
+try {
+  for (var dsnGroupCount = 0; dsnGroupCount < designGroup.layers.length; dsnGroupCount++) {
+    var currentDesign = designGroup.layers[dsnGroupCount];
+    var designName = currentDesign.layers[0].name;
+    currentDesign.visible = true;
 
-  if (designGroup.layers[dsnGroupCount].name === DSNLIGHTBG) {
-    mockColorGroup = lightMockGroup;
-  } else {
-    mockColorGroup = darkMockGroup;
-  }
-  mockColorGroup.visible = true;
+    if (designGroup.layers[dsnGroupCount].name === DSNLIGHTBG) {
+      mockColorGroup = lightMockGroup;
+    } else {
+      mockColorGroup = darkMockGroup;
+    }
 
-  if (mockColorGroup.layers.length > 0) {
-    for (var colorGroupMockCount = 0; colorGroupMockCount < mockColorGroup.layers.length; colorGroupMockCount++) {
-      try {
-        var colorGroupLayer = mockColorGroup.layers[colorGroupMockCount];
-        var color = colorGroupLayer.name;
-        var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
+    mockColorGroup.visible = true;
 
-        // Unhide mock shirt color, export design, save then hide the mock shirt, then proceed to another shirt color.
-        colorGroupLayer.visible = true;
-        doc.exportDocument(fileName, ExportType.SAVEFORWEB);
-        colorGroupLayer.visible = false;
-      } catch (err) {
-        alert("Error in generating shirt mockups: " + err);
+    if (mockColorGroup.layers.length > 0) {
+      for (var colorGroupMockCount = 0; colorGroupMockCount < mockColorGroup.layers.length; colorGroupMockCount++) {
+        try {
+          var colorGroupLayer = mockColorGroup.layers[colorGroupMockCount];
+          var color = colorGroupLayer.name;
+          var fileName = new File(EXPORTPATH + "/" + designName + "-" + color + ".jpg");
+
+          // Unhide mock shirt color, export design, save then hide the mock shirt, then proceed to another shirt color.
+          colorGroupLayer.visible = true;
+          doc.exportDocument(fileName, ExportType.SAVEFORWEB);
+          colorGroupLayer.visible = false;
+        } catch (err) {
+          alert("Error in generating shirt mockups: " + err);
+        }
       }
     }
+
+    currentDesign.visible = false;
+    mockColorGroup.visible = false;
   }
 
-  currentDesign.visible = false;
-  mockColorGroup.visible = false;
+  alert("Mockups successfulyy generated. Check your EXPORTS folder for the mockup images.");
+} catch (err) {
+  alert("Error: " + err)
 }
