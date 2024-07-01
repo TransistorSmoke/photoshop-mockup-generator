@@ -15,7 +15,7 @@ var BASEPATH = scriptFile.parent;
 var EXPORTPATH = BASEPATH + "/exports";
 
 var MOCKUPS = "MOCKUPS";
-var PCT = 0.4;  // Resize percentage
+var PCT = 0.6;  // Resize percentage
 
 var canvasWidth = doc.width;
 var canvasHeight = doc.height;
@@ -25,6 +25,12 @@ var singleMockup = allMockupsGroups.layers[0];
 var singleMockupWidth = singleMockup.bounds[2] - singleMockup.bounds[0];
 var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
 
+// ------------------------------------
+// PROCESS: CROP FIRST, THEN TRANSLATE
+// ------------------------------------
+
+
+// RESIZING Procedure
 // singleMockup.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
 // singleMockupWidth = singleMockup.bounds[2] - singleMockup.bounds[0];
 
@@ -33,23 +39,26 @@ var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
 // singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
 
 // Set the placement of the layer in the canvas
-var mockupCurrentBounds = singleMockup.bounds;
-singleMockup.translate(-mockupCurrentBounds[0], -mockupCurrentBounds[1]);
+// var mockupCurrentBounds = singleMockup.bounds;
+// singleMockup.translate(-mockupCurrentBounds[0], -mockupCurrentBounds[1]);
 
 
+
+// CROPPING Procedure
 try {
-  // Testing to crop the layer
-  var left = 250;
-  var top = 0;
-  var right = singleMockupWidth - left;
-  var bottom = singleMockupHeight
+
+  // Test - crop first then translate
+  var left = canvasWidth/2 - singleMockupWidth/2 + 250;
+  var top = canvasHeight/2 - singleMockupHeight/2;
+  var right = canvasWidth/2 + singleMockupWidth/2 - 250;
+  var bottom = canvasHeight - singleMockupHeight/2;
   var cropBounds = [left, top, right, bottom];
-  // var activeMockLayer = doc.activeLayer;
 
 
   var activeMockLayer = singleMockup;
   // var duplicateActiveMockLayer = activeMockLayer.duplicate();
   // duplicateActiveMockLayer.name = activeMockLayer.name + " (cropped)";
+  // activeMockLayer.name = activeMockLayer.name + " (cropped)";
 
 
   // Select the layer
@@ -60,17 +69,33 @@ try {
     [cropBounds[0], cropBounds[3]],
   ])
 
-  // var idCrop = charIDToTypeID("Crop");
-  // var descriptor = new ActionDescriptor();
-  // var idT = charIDToTypeID("#Pxl");
+  doc.selection.copy();
+  var newCroppedLayer = allMockupsGroups.artLayers.add();
+  newCroppedLayer.name = activeMockLayer.name + "- cropped";
+  doc.paste();
+  doc.selection.deselect();
+  var newCroppedLayerBounds = newCroppedLayer.bounds;
+  activeMockLayer.visible = false;
 
-  // descriptor.putUnitDouble(charIDToTypeID("Left", idT, cropBounds[0]));
-  // descriptor.putUnitDouble(charIDToTypeID("Top ", idT, cropBounds[1]));
-  // descriptor.putUnitDouble(charIDToTypeID("Rght", idT, cropBounds[2]));
-  // descriptor.putUnitDouble(charIDToTypeID("Btom", idT, cropBounds[3]));
-  // executeAction(idCrop, descriptor, DialogModes.NO)
+  // Resize here
+  // ----------------
+  newCroppedLayer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
+  newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
 
-  // doc.selection.deselect();
+  // Get new width and height after resize
+  newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
+  newCroppedLayerHeight = newCroppedLayer.bounds[3] - newCroppedLayer.bounds[1];
+  newCroppedLayer.translate(-newCroppedLayer.bounds[0], -newCroppedLayer.bounds[1]);
+  // -----------------
+
+  /*
+  * Loop through all the shirt colors here.
+  *
+  */
+
+
+  // Mock image crop and resize successful!
+  alert("Generation of all mock shirt images successful")
 
 } catch(err) {
   alert("error in testing crop process: " + err)
@@ -95,16 +120,10 @@ try {
 // }
 
 
+function cropMockShirtLayer() {
 
-// alert("Width of a single mockup: " + singleMockup.width);
-// alert("Height of a single mockup: " + singleMockup.height);
+}
 
+function resizeMockShirtLayer() {
 
-// Unused function
-// function createSelectionBounds(cropBounds) {
-//   var selectionBounds = new ActionDescriptor();
-//   selectionBounds.putUnitDouble(charIDToTypeID("Left"), charIDToTypeID("#Pxl"), cropBounds[0]);
-//   selectionBounds.putUnitDouble(charIDToTypeID("Top "), charIDToTypeID("#Pxl"), cropBounds[1]);
-//   selectionBounds.putUnitDouble(charIDToTypeID("Rght"), charIDToTypeID("#Pxl"), cropBounds[2]);
-//   selectionBounds.putUnitDouble(charIDToTypeID("Btom"), charIDToTypeID("#Pxl"), cropBounds[3]);
-// }
+}
