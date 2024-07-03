@@ -22,7 +22,6 @@ var canvasWidth = doc.width;
 var canvasHeight = doc.height;
 var allMockupsGroup = doc.layerSets.getByName(MOCKUPS);
 var resizedGroup = doc.layerSets.getByName(RESIZED);
-
 // alert("inside resied group: " + resizedGroup.layers[0].name )
 
 var singleMockup = allMockupsGroup.layers[0];
@@ -58,9 +57,15 @@ try {
   var right = canvasWidth/2 + singleMockupWidth/2 - 250;
   var bottom = canvasHeight - singleMockupHeight/2;
   var cropBounds = [left, top, right, bottom];
-  // var activeMockLayer = singleMockup;
+
+  // Mock crop dimenstions initialised
   var newCroppedLayerWidth = 0;
   var newCroppedLayerHeight = 0;
+  var translateX = 0;
+  var translateY = 0;
+  var newCroppedLayer = null;
+  var newCroppedLayerBounds = null;
+  var rowMultiplier = 0;
 
   // Select the layer
   // doc.selection.select([
@@ -90,7 +95,7 @@ try {
   */
 
   // for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
-  for (var mockCount = 0; mockCount < 4; mockCount++) {
+  for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
     var activeMockLayer = allMockupsGroup.layers[mockCount];
     doc.activeLayer = activeMockLayer;
     activeMockLayer.visible = true;
@@ -102,25 +107,48 @@ try {
     ])
 
     doc.selection.copy();
-    var newCroppedLayer = resizedGroup.artLayers.add();
+    newCroppedLayer = resizedGroup.artLayers.add();
     newCroppedLayer.name = activeMockLayer.name + "- cropped";
     doc.paste();
     doc.selection.deselect();
-    var newCroppedLayerBounds = newCroppedLayer.bounds;
+    newCroppedLayerBounds = newCroppedLayer.bounds;
     activeMockLayer.visible = false;
 
     newCroppedLayer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
     newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
     newCroppedLayerHeight = newCroppedLayer.bounds[3] - newCroppedLayer.bounds[1];
 
-    var translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * mockCount) ;
+
+    if (mockCount < 4) {
+      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * mockCount);
+      translateY = -newCroppedLayer.bounds[1];
+    } else if (mockCount >= 4) {
+      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+
+      if (mockCount < 8) {
+        translateY = - ((0.5 * canvasHeight) - (1.5*newCroppedLayerHeight - 80));
+      } else {
+        translateY = 400;
+      }
+    } else if (mockCount >= 8) {
+      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 8));
+    } else if (mockCount >= 12) {
+      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+    }
+
+    newCroppedLayer.translate(translateX, translateY);
 
 
-    newCroppedLayer.translate(translateX, -newCroppedLayer.bounds[1]);
+
+
+
+
 
 
   }
 
+  var newCanvasHeight = Math.ceil((allMockupsGroup.layers.length/4)) * newCroppedLayerHeight;
+  doc.resizeCanvas(canvasWidth, newCanvasHeight, AnchorPosition.TOPCENTER);
 
   // Mock image crop and resize successful!
   alert("Generation of all mock shirt images successful")
