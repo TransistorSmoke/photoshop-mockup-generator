@@ -29,6 +29,10 @@ var singleMockup = allMockupsGroup.layers[0];
 var singleMockupWidth = singleMockup.bounds[2] - singleMockup.bounds[0];
 var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
 
+
+// var translateX = -((canvasWidth/2) - (singleMockupWidth/2) );
+// singleMockup.translate(translateX, -singleMockup.bounds[1]);
+
 // ------------------------------------
 // PROCESS: CROP FIRST, THEN TRANSLATE
 // ------------------------------------
@@ -85,7 +89,8 @@ try {
   *
   */
 
-  for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
+  // for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
+  for (var mockCount = 0; mockCount < 4; mockCount++) {
     var activeMockLayer = allMockupsGroup.layers[mockCount];
     doc.activeLayer = activeMockLayer;
     activeMockLayer.visible = true;
@@ -104,8 +109,16 @@ try {
     var newCroppedLayerBounds = newCroppedLayer.bounds;
     activeMockLayer.visible = false;
 
-    cropAndResizeMockLayer(newCroppedLayer, newCroppedLayerWidth, newCroppedLayerHeight);
-    newCroppedLayer.translate(-newCroppedLayer.bounds[0], -newCroppedLayer.bounds[1]);
+    newCroppedLayer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
+    newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
+    newCroppedLayerHeight = newCroppedLayer.bounds[3] - newCroppedLayer.bounds[1];
+
+    var translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * mockCount) ;
+
+
+    newCroppedLayer.translate(translateX, -newCroppedLayer.bounds[1]);
+
+
   }
 
 
@@ -116,27 +129,9 @@ try {
   alert("error in testing crop process: " + err)
 }
 
-
-// for (var mockCounter = 0; mockCounter < allMockupsGroups.layers.length; mockCounter++) {
-// for (var mockCounter = 0; mockCounter <5; mockCounter++) {
-
-//   // FIRST ROW
-//   if (mockCounter <= 4) {
-
-//   }
-
-//   if (mockCounter === 0) {
-//     singleMockup.translate(-mockupCurrentBounds[0], -mockupCurrentBounds[1]);
-//   }
-// }
-
-
 function cropAndResizeMockLayer(layer, width, height) {
   layer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
   width = layer.bounds[2] - layer.bounds[0];
   height = layer.bounds[3] - layer.bounds[1];
 }
 
-function resizeMockShirtLayer() {
-
-}
