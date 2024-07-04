@@ -6,7 +6,7 @@ I need to create a fast way to get these mockups out so that I can use them in m
 
 These scripts are run in Photoshop. You may use them as you wish. 
 
-**PART 1 **
+**PART 1**
 The application will automatically impose my designs into the shirt mockups of different colors and they each get exported as a single image.
 This is achieved by running _generateShirtMockups.js_ from Photoshop.
 
