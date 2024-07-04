@@ -4,7 +4,7 @@ I created these scripts to automate my creation of shirt design mockups which, s
 
 I need to create a fast way to get these mockups out so that I can use them in my Etsy shop ;)
 
-These scripts are run in Photoshop. You may use them as you wish. 
+These scripts are run in Photoshop.
 
 **PART 1.** The application will automatically imposes designs into the shirt mockups of different colors and they each get exported as a single image.
 This is achieved by running _generateShirtMockups.js_ from Photoshop.
