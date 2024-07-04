@@ -1,13 +1,16 @@
 #target photoshop
 
 /*
-* PURPOSE OF THIS SCRIPT
+* ------- PART B -------*
 * After generating all the shirt mockup, this script will render all the images into a single canvas.
 * Export the result into a single image.
 *
+* IMPORTANT: This are the requirements in order for the script to work.
+* 1.) Ensure that all the original shirt mockups are all center-aligned to the canvas, both horizontally and vertically.
+* 2.) Create 2 layer groups and name them MOCKUPS and RESIZED.
+* 3.) Under MOCKUPS, place all the generated images that you acquired from PART A.
+* 4.) The cropped images will be saved inside the RESIZED group.
 *
-* IMPORTANT NOTES:
-* 1.) Ensure that all the original shirt mockups are all center-aligned tp the canvas, both horizontally and vertically.
 */
 
 var doc = app.activeDocument;
@@ -30,8 +33,6 @@ var resizedGroup = doc.layerSets.getByName(RESIZED);
 var singleMockup = allMockupsGroup.layers[0];
 var singleMockupWidth = singleMockup.bounds[2] - singleMockup.bounds[0];
 var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
-
-
 
 try {
   var left = (canvasWidth/2 - singleMockupWidth/2) + 250;
@@ -86,9 +87,6 @@ try {
   // -----------------------------------------
   // ...and then lay them all out into a grid
   // ------------------------------------------
-
-
-  // for (var mockCount = 0; mockCount < resizedGroup.layers.length; mockCount++) {
   for (var mockCount = 0; mockCount < 12; mockCount++) {
     activeResizedLayer = resizedGroup.layers[mockCount];
     resizedLayerWidth = activeResizedLayer.bounds[2] - activeResizedLayer.bounds[0]
@@ -116,9 +114,8 @@ try {
   doc.resizeCanvas(canvasWidth, newCanvasHeight, AnchorPosition.TOPCENTER);
 
   var designName = allMockupsGroup.layers[0].name.slice(0, 12);
-  // var fileName = new File(EXPORTPATH + "/" + designName + ".jpg");
-  // doc.exportDocument(fileName, ExportType.SAVEFORWEB);
-
+  var fileName = new File(EXPORTPATH + "/" + designName + ".jpg");
+  doc.exportDocument(fileName, ExportType.SAVEFORWEB);
 
   // Mock image crop and resize successful!
   alert("Generation of all mock shirt images successful")
@@ -126,10 +123,3 @@ try {
 } catch(err) {
   alert("error in testing crop process: " + err)
 }
-
-function cropAndResizeMockLayer(layer, width, height) {
-  layer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
-  width = layer.bounds[2] - layer.bounds[0];
-  height = layer.bounds[3] - layer.bounds[1];
-}
-

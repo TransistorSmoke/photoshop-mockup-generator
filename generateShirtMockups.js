@@ -1,10 +1,19 @@
 #target photoshop
 
 /*
-* PURPOSE OF THIS SCRIPT
-* Loop each design through each shirt mock item
-* Save each created mock to a folder.
-* Make this folder name be the design name.
+* ------- PART A -------
+* This script overlays the design to each of the shirts and saves each mockup.
+* I use this script for Photoshop version 2023. I am not sure if it works for other versions.
+*
+* IMPORTANT: These are the requirements in order for the script to work.
+*
+* 1.) Create 2 layer groups and name them DESIGNS and MOCKS.
+* 2.) Under DESIGNS group, create 2 subgroups named LIGHTBG and DARKBG.
+*       - Place your designs for light-colored shirt inside LIGHTBG, and for dark-colored shirt inside DARKBG.
+* 3.) Under MOCKS group, create 2 subgroupes names LIGHT and DARK.
+        - Place your light shirt mockups inside LIGHT, and dark inside DARK.
+* 4.) Run the script and acquire the generated mockups.
+*
 */
 
 var doc = app.activeDocument;
@@ -16,7 +25,6 @@ var scriptFilePath = $.fileName;
 var scriptFile = new File(scriptFilePath);
 var BASEPATH = scriptFile.parent;
 var EXPORTPATH = BASEPATH + "/exports";
-
 
 var designGroup = doc.layerSets.getByName(DESIGNS);
 var mockGroup = doc.layerSets.getByName(MOCKS);
