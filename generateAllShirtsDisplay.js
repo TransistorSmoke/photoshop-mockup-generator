@@ -23,13 +23,10 @@ var EXPORTPATH = BASEPATH + "/exports";
 var MOCKUPS = "MOCKUPS";
 var RESIZED = "RESIZED";
 var PCT = 0.6;  // Resize percentage
-
 var canvasWidth = doc.width;
 var canvasHeight = doc.height;
 var allMockupsGroup = doc.layerSets.getByName(MOCKUPS);
 var resizedGroup = doc.layerSets.getByName(RESIZED);
-// alert("inside resied group: " + resizedGroup.layers[0].name )
-
 var singleMockup = allMockupsGroup.layers[0];
 var singleMockupWidth = singleMockup.bounds[2] - singleMockup.bounds[0];
 var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
@@ -68,7 +65,7 @@ try {
       [cropBounds[2], cropBounds[1]],
       [cropBounds[2], cropBounds[3]],
       [cropBounds[0], cropBounds[3]],
-    ])
+    ]);
 
     doc.selection.copy();
     newCroppedLayer = resizedGroup.artLayers.add();
