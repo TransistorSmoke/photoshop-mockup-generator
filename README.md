@@ -15,4 +15,4 @@ This is achieved by running _generateShirtMockups.js_ from Photoshop.
 
 Photoshop scripting is something I encountered just a week ago. I find it quite a fun niche for me as a graphics design and web developer.
 
-I will try to maintain these file, and hopefully create more scripts to automate some of my Photoshop tasks. 
+I will try to maintain these files, and hopefully create more scripts to automate some of my Photoshop tasks. 
