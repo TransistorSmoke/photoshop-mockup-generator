@@ -12,6 +12,7 @@ The application will automatically impose my designs into the shirt mockups of d
 This is achieved by running _generateShirtMockups.js_ from Photoshop.
 
 
+
 **PART 2** 
 
 Another script is run to resize and crop each of these image mockups, lay them all out into the canvas, created a grid of all available colors of my shirt mockups. This is achieved by running _generateAllShirtsDisplay.js_ from Photoshop.
