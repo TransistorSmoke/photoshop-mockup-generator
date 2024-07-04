@@ -53,7 +53,7 @@ var singleMockupHeight = singleMockup.bounds[3] - singleMockup.bounds[1];
 
 try {
   var left = canvasWidth/2 - singleMockupWidth/2 + 250;
-  var top = canvasHeight/2 - singleMockupHeight/2;
+  var top = canvasHeight/2 - singleMockupHeight/2 - 50;
   var right = canvasWidth/2 + singleMockupWidth/2 - 250;
   var bottom = canvasHeight - singleMockupHeight/2;
   var cropBounds = [left, top, right, bottom];
@@ -95,59 +95,86 @@ try {
   */
 
   // for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
-  for (var mockCount = 0; mockCount < allMockupsGroup.layers.length; mockCount++) {
-    var activeMockLayer = allMockupsGroup.layers[mockCount];
-    doc.activeLayer = activeMockLayer;
-    activeMockLayer.visible = true;
-    doc.selection.select([
-      [cropBounds[0], cropBounds[1]],
-      [cropBounds[2], cropBounds[1]],
-      [cropBounds[2], cropBounds[3]],
-      [cropBounds[0], cropBounds[3]],
-    ])
+  //   var activeMockLayer = allMockupsGroup.layers[mockCount];
+  //   doc.activeLayer = activeMockLayer;
+  //   activeMockLayer.visible = true;
+  //   doc.selection.select([
+  //     [cropBounds[0], cropBounds[1]],
+  //     [cropBounds[2], cropBounds[1]],
+  //     [cropBounds[2], cropBounds[3]],
+  //     [cropBounds[0], cropBounds[3]],
+  //   ])
 
-    doc.selection.copy();
-    newCroppedLayer = resizedGroup.artLayers.add();
-    newCroppedLayer.name = activeMockLayer.name + "- cropped";
-    doc.paste();
-    doc.selection.deselect();
-    newCroppedLayerBounds = newCroppedLayer.bounds;
-    activeMockLayer.visible = false;
+  //   doc.selection.copy();
+  //   newCroppedLayer = resizedGroup.artLayers.add();
+  //   newCroppedLayer.name = activeMockLayer.name + "- cropped";
+  //   doc.paste();
+  //   doc.selection.deselect();
+  //   newCroppedLayerBounds = newCroppedLayer.bounds;
+  //   activeMockLayer.visible = false;
 
-    newCroppedLayer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
-    newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
-    newCroppedLayerHeight = newCroppedLayer.bounds[3] - newCroppedLayer.bounds[1];
+  //   newCroppedLayer.resize(PCT * 100, PCT * 100, AnchorPosition.MIDDLECENTER);
+  //   newCroppedLayerWidth = newCroppedLayer.bounds[2] - newCroppedLayer.bounds[0];
+  //   newCroppedLayerHeight = newCroppedLayer.bounds[3] - newCroppedLayer.bounds[1];
 
+  //   newCroppedLayer.translate(-newCroppedLayer.bounds[0], -newCroppedLayer.bounds[1]);
+
+
+  //   // if (mockCount < 4) {
+  //   //   translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * mockCount);
+  //   //   translateY = -newCroppedLayer.bounds[1];
+  //   // } else if (mockCount >= 4) {
+  //   //   translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+
+  //   //   if (mockCount < 8) {
+  //   //     translateY = - ((0.5 * canvasHeight) - (1.5*newCroppedLayerHeight - 80));
+  //   //   } else {
+  //   //     translateY = 400;
+  //   //   }
+  //   // } else if (mockCount >= 8) {
+  //   //   translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 8));
+  //   // } else if (mockCount >= 12) {
+  //   //   translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+  //   // }
+
+  //   // newCroppedLayer.translate(translateX, translateY);
+  // }
+
+  var activeResizedLayer = 0;
+  var resizedLayerWidth = 0;
+  var resizedLayerHeight = 0;
+  var offsetX = 0;
+  var offsetY = 0;
+  var row = 0;
+
+  for (var mockCount = 0; mockCount < resizedGroup.layers.length; mockCount++) {
+    activeResizedLayer = resizedGroup.layers[mockCount];
+    resizedLayerWidth = activeResizedLayer.bounds[2] - activeResizedLayer.bounds[0]
+    resizedLayerHeight = activeResizedLayer.bounds[2] - activeResizedLayer.bounds[0]
+    offsetX = resizedLayerWidth * mockCount;
+    row = Math.floor(mockCount/4);
+
+    // offsetY = (mockCount * resizedLayerHeight);
+    offsetY = resizedLayerHeight * row;
 
     if (mockCount < 4) {
-      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * mockCount);
-      translateY = -newCroppedLayer.bounds[1];
-    } else if (mockCount >= 4) {
-      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+      offsetY = -activeResizedLayer.bounds[1];
 
-      if (mockCount < 8) {
-        translateY = - ((0.5 * canvasHeight) - (1.5*newCroppedLayerHeight - 80));
-      } else {
-        translateY = 400;
-      }
-    } else if (mockCount >= 8) {
-      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 8));
-    } else if (mockCount >= 12) {
-      translateX = -((canvasWidth - newCroppedLayerWidth) * 0.5) + (newCroppedLayerWidth * (mockCount - 4));
+    } else if (mockCount >= 4 && mockCount < 8) {
+      offsetX = resizedLayerWidth * (mockCount - 4);
+    } else if (mockCount >= 8 && mockCount < 12) {
+      offsetX = resizedLayerWidth * (mockCount - 8);
+    } else if (mockCount >= 12 && mockCount < 16) {
+      offsetX = resizedLayerWidth * (mockCount - 12);
     }
 
-    newCroppedLayer.translate(translateX, translateY);
 
 
-
-
-
-
-
+    activeResizedLayer.translate(offsetX, offsetY);
 
   }
 
-  var newCanvasHeight = Math.ceil((allMockupsGroup.layers.length/4)) * newCroppedLayerHeight;
+  var newCanvasHeight = row * resizedLayerHeight;
   doc.resizeCanvas(canvasWidth, newCanvasHeight, AnchorPosition.TOPCENTER);
 
   // Mock image crop and resize successful!
