@@ -7,11 +7,11 @@ I need to create a fast way to get these mockups out so that I can use them in m
 These scripts are run in Photoshop.
 
 **PART 1.** The application will automatically imposes designs into the shirt mockups of different colors and they each get exported as a single image.
-This is achieved by running _generateShirtMockups.js_ from Photoshop.
+This is achieved by running **_generateShirtMockupDarkLight.js_** from Photoshop.
 
 
 
-**PART 2.** Another script is run to resize and crop each of these image mockups, lay them all out into the canvas, created a grid of all available colors of my shirt mockups. This is achieved by running _generateAllShirtsDisplay.js_ from Photoshop.
+**PART 2.** Another script is run to resize and crop each of these image mockups, lay them all out into the canvas, created a grid of all available colors of my shirt mockups. This is achieved by running **_generateAllShirtsDisplay.js_** from Photoshop.
 
 Photoshop scripting is something I encountered just a week ago. I find it quite a fun niche for me as a graphics design and web developer.
 
