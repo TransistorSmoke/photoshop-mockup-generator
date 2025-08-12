@@ -1,6 +1,6 @@
 **Automated Mockup Creation for Adobe Photoshop**
 
-I created these scripts to automate my creation of shirt design mockups which, simplifying the tedious process of creating mockups. They're not perfect but they do the job well. :D
+I created these scripts to automate my creation of shirt design mockups simplifying the tedious process of manually preparing mockups in Photoshop. They're not perfect but they do the job well. :D
 
 I need to create a fast way to get these mockups out so that I can use them in my Etsy shop ;)
 
