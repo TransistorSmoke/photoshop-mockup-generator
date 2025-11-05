@@ -6,7 +6,7 @@ I need to create a fast way to get these mockups out so that I can use them in m
 
 These scripts are run in Photoshop.
 
-**PART 1.** The application will automatically imposes designs into the shirt mockups of different colors and they each get exported as a single image.
+**PART 1.** The application will automatically impose designs into the shirt mockups of different colors and they each get exported as a single image.
 This is achieved by running **_generateShirtMockupDarkLight.js_** from Photoshop.
 
 
